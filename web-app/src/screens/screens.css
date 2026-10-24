@@ -1,0 +1,211 @@
+.back-button {
+  align-self: flex-start;
+  margin-left: calc(var(--space-3) * -1);
+}
+
+.stack-sm {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+/* ---------- Verify ---------- */
+.session-timer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-muted);
+  font-size: 0.9rem;
+  color: var(--color-fg-muted);
+}
+
+.session-timer-label {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.session-timer time {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  color: var(--color-fg);
+}
+
+/* ---------- Íconos destacados ---------- */
+.feature-icon {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-md);
+  background: var(--color-info-bg);
+  color: var(--color-info);
+  flex: none;
+}
+
+.feature-icon[data-tone='success'] {
+  background: var(--color-success-bg);
+  color: var(--color-success);
+}
+
+.feature-icon[data-tone='danger'] {
+  background: var(--color-danger-bg);
+  color: var(--color-danger);
+}
+
+/* ---------- Setup 2FA ---------- */
+.start-card {
+  max-width: 720px;
+}
+
+.how-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--space-3);
+  counter-reset: how;
+}
+
+@media (min-width: 720px) {
+  .how-list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.how-list li {
+  counter-increment: how;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-muted);
+  font-size: 0.9rem;
+}
+
+.how-list li::before {
+  content: counter(how);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--color-fg-muted);
+  margin-bottom: var(--space-1);
+}
+
+.how-list span {
+  color: var(--color-fg-muted);
+}
+
+/* ---------- Bóveda ---------- */
+.vault-hero {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.vault-hero .badge {
+  margin-left: auto;
+}
+
+.secret-note {
+  position: relative;
+  padding: var(--space-6) var(--space-5) var(--space-5);
+  border-radius: var(--radius-md);
+  background: var(--brand-bg);
+  color: var(--brand-fg);
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+
+.secret-note::before {
+  content: 'CLASIFICADO';
+  position: absolute;
+  top: var(--space-3);
+  right: var(--space-4);
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  color: var(--brand-accent);
+}
+
+.claims-list {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.claims-row {
+  display: grid;
+  grid-template-columns: 9rem minmax(0, 1fr);
+  gap: var(--space-4);
+  padding: var(--space-2) 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.claims-row:last-child {
+  border-bottom: 0;
+}
+
+.claims-row dt {
+  font-family: var(--font-mono);
+  color: var(--color-fg-muted);
+}
+
+.claims-row dd {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.token-preview {
+  display: block;
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-muted);
+  font-size: 0.8rem;
+  color: var(--color-fg-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.skeleton {
+  border-radius: var(--radius-lg);
+  background: linear-gradient(
+    90deg,
+    var(--color-surface-muted) 0%,
+    var(--color-border) 50%,
+    var(--color-surface-muted) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  from {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: -200% 0;
+  }
+}
+
+.empty-state {
+  align-items: center;
+  text-align: center;
+  padding: var(--space-7) var(--space-5);
+  max-width: 560px;
+  margin: var(--space-6) auto 0;
+}
+
+.empty-state p {
+  color: var(--color-fg-muted);
+  max-width: 44ch;
+}
