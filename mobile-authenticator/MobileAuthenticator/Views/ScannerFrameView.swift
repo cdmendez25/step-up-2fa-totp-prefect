@@ -4,7 +4,14 @@ import SwiftUI
 ///
 ///     ScannerFrameView { TuVistaDeCamara() }
 struct ScannerFrameView<Camera: View>: View {
-    @ViewBuilder let camera: () -> Camera
+    let camera: () -> Camera
+
+    @State private var sweepAtBottom = false
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
+    init(@ViewBuilder camera: @escaping () -> Camera) {
+        self.camera = camera
+    }
 
     var body: some View {
         Color.black
@@ -15,6 +22,29 @@ struct ScannerFrameView<Camera: View>: View {
                 ViewfinderCorners()
                     .stroke(Theme.success, style: StrokeStyle(lineWidth: 5, lineCap: .round, lineJoin: .round))
                     .padding(32)
+            }
+            .overlay {
+                // Indicador de "escaneando": la línea va y viene mientras la cámara busca el QR.
+                if !reduceMotion {
+                    GeometryReader { proxy in
+                        LinearGradient(
+                            colors: [.clear, Theme.success.opacity(0.9), .clear],
+                            startPoint: .leading,
+                            endPoint: .trailing
+                        )
+                        .frame(height: 3)
+                        .shadow(color: Theme.success, radius: 6)
+                        .offset(y: sweepAtBottom ? proxy.size.height - 44 : 44)
+                    }
+                    .padding(.horizontal, 44)
+                    .allowsHitTesting(false)
+                }
+            }
+            .onAppear {
+                guard !reduceMotion else { return }
+                withAnimation(.easeInOut(duration: 1.8).repeatForever(autoreverses: true)) {
+                    sweepAtBottom = true
+                }
             }
             .frame(maxWidth: 320)
             .accessibilityElement(children: .ignore)

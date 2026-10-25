@@ -6,6 +6,13 @@ struct CountdownRing: View {
     let secondsRemaining: Int
     let period: Int
 
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
+    /// En los últimos segundos late una vez por segundo para llamar la atención.
+    private var pulseScale: CGFloat {
+        isEnding && !reduceMotion && secondsRemaining.isMultiple(of: 2) ? 1.12 : 1
+    }
+
     private var isEnding: Bool { secondsRemaining <= Theme.warningThreshold }
 
     private var fraction: Double {
@@ -32,6 +39,8 @@ struct CountdownRing: View {
                 .animation(.snappy, value: secondsRemaining)
         }
         .frame(width: 44, height: 44)
+        .scaleEffect(pulseScale)
+        .animation(.easeInOut(duration: 0.45), value: secondsRemaining)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel("Quedan \(secondsRemaining) segundos")
     }

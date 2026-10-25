@@ -11,6 +11,8 @@ struct AddAccountView: View {
 
     /// Error que decidió tu lógica, p. ej. "La clave no es Base32 válido".
     var errorMessage: String?
+    /// true justo después de leer un QR válido: muestra el ✓ antes de cerrar la hoja.
+    var scanSucceeded: Bool
     /// Tu vista de cámara. nil = se muestra un marcador de posición.
     var cameraView: AnyView?
     var onCancel: () -> Void
@@ -28,12 +30,14 @@ struct AddAccountView: View {
     init(
         initialMode: Mode = .scan,
         errorMessage: String? = nil,
+        scanSucceeded: Bool = false,
         cameraView: AnyView? = nil,
         onCancel: @escaping () -> Void = {},
         onSubmitManual: @escaping (ManualAccountEntry) -> Void = { _ in }
     ) {
         _mode = State(initialValue: initialMode)
         self.errorMessage = errorMessage
+        self.scanSucceeded = scanSucceeded
         self.cameraView = cameraView
         self.onCancel = onCancel
         self.onSubmitManual = onSubmitManual
@@ -81,6 +85,22 @@ struct AddAccountView: View {
                         CameraPlaceholder()
                     }
                 }
+                .overlay {
+                    if scanSucceeded {
+                        ZStack {
+                            Circle()
+                                .fill(Theme.success)
+                                .frame(width: 88, height: 88)
+                                .shadow(color: Theme.success.opacity(0.5), radius: 16)
+                            Image(systemName: "checkmark")
+                                .font(.system(size: 40, weight: .bold))
+                                .foregroundStyle(.white)
+                        }
+                        .transition(.scale(scale: 0.4).combined(with: .opacity))
+                        .accessibilityLabel("Código QR leído")
+                    }
+                }
+                .animation(.spring(duration: 0.4, bounce: 0.45), value: scanSucceeded)
                 .padding(.top, 8)
 
                 VStack(spacing: 6) {

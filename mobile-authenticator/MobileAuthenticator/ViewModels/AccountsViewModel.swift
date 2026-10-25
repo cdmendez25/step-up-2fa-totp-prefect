@@ -76,6 +76,7 @@ final class AccountsViewModel {
             return false
         }
         addError = nil
+        UINotificationFeedbackGenerator().notificationOccurred(.success)
         showToast("Cuenta agregada")
         return true
     }
@@ -85,6 +86,8 @@ final class AccountsViewModel {
     func delete(_ id: UUID) {
         accounts.removeAll { $0.id == id }
         KeychainStore.save(accounts)
+        UINotificationFeedbackGenerator().notificationOccurred(.warning)
+        showToast("Cuenta eliminada")
     }
 
     func copy(_ card: AccountCardModel) {
