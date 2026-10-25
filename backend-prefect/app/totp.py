@@ -74,7 +74,10 @@ def verify_totp(secret_b32: str, code: str, unix_time: float | None = None) -> i
 def provisioning_uri(secret_b32: str, account_name: str, issuer: str) -> str:
     """La URI que va dentro del QR: otpauth://totp/Emisor:cuenta?secret=...&issuer=..."""
     label = quote(f"{issuer}:{account_name}")
+    # quote_via=quote: el espacio va como %20. Con el "+" por defecto, las apps
+    # Authenticator mostraban "Boveda+2FA" en vez de "Boveda 2FA".
     params = urlencode(
-        {"secret": secret_b32, "issuer": issuer, "algorithm": "SHA1", "digits": DIGITS, "period": PERIOD}
+        {"secret": secret_b32, "issuer": issuer, "algorithm": "SHA1", "digits": DIGITS, "period": PERIOD},
+        quote_via=quote,
     )
     return f"otpauth://totp/{label}?{params}"

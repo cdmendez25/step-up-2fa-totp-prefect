@@ -54,3 +54,5 @@ def test_provisioning_uri_has_what_authenticator_apps_expect():
     assert uri.startswith("otpauth://totp/Boveda%202FA%3Acarlos?")
     assert "secret=JBSWY3DPEHPK3PXP" in uri
     assert "digits=6" in uri and "period=30" in uri and "algorithm=SHA1" in uri
+    # El espacio del emisor debe ir como %20 (con "+" las apps muestran "Boveda+2FA").
+    assert "issuer=Boveda%202FA" in uri and "+" not in uri
