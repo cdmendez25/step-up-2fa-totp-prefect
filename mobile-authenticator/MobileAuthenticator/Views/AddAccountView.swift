@@ -180,7 +180,3 @@ struct ErrorLabel: View {
 #Preview("Ingresar clave") {
     AddAccountView(initialMode: .manual)
 }
-
-#Preview("Clave inválida") {
-    AddAccountView(initialMode: .manual, errorMessage: "La clave tiene caracteres que no son Base32 (0, 1, 8 o 9).")
-}

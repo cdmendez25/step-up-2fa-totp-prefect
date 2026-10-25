@@ -36,12 +36,3 @@ struct CountdownRing: View {
         .accessibilityLabel("Quedan \(secondsRemaining) segundos")
     }
 }
-
-#Preview("Normal y en alerta") {
-    HStack(spacing: 24) {
-        CountdownRing(secondsRemaining: 30, period: 30)
-        CountdownRing(secondsRemaining: 18, period: 30)
-        CountdownRing(secondsRemaining: 4, period: 30)
-    }
-    .padding()
-}

@@ -109,14 +109,6 @@ struct Toast: View {
     }
 }
 
-#Preview("Con cuentas") {
-    AccountsListView(accounts: PreviewData.accounts)
-}
-
 #Preview("Vacío") {
     AccountsListView(accounts: [])
-}
-
-#Preview("Código copiado") {
-    AccountsListView(accounts: [PreviewData.main], toastMessage: "Código copiado")
 }

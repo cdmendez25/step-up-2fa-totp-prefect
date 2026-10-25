@@ -85,12 +85,3 @@ struct PressableCardStyle: ButtonStyle {
             .animation(.spring(duration: 0.2), value: configuration.isPressed)
     }
 }
-
-#Preview("Tarjeta") {
-    VStack(spacing: 14) {
-        CodeCardView(account: PreviewData.main)
-        CodeCardView(account: PreviewData.ending)
-    }
-    .padding()
-    .background(Theme.screenBackground)
-}
