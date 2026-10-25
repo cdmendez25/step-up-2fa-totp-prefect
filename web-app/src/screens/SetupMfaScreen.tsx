@@ -165,7 +165,11 @@ function ActiveSection({ backupCodes, onCopyBackupCodes, onDownloadBackupCodes, 
         A partir de ahora, cada inicio de sesión necesitará el código de tu app o un código de respaldo.
       </Alert>
 
-      <BackupCodesCard codes={backupCodes} onCopy={onCopyBackupCodes} onDownload={onDownloadBackupCodes} />
+      {backupCodes.length > 0 ? (
+        <BackupCodesCard codes={backupCodes} onCopy={onCopyBackupCodes} onDownload={onDownloadBackupCodes} />
+      ) : (
+        <p className="muted">Tus códigos de respaldo se mostraron una sola vez, al activar el 2FA.</p>
+      )}
 
       <div>
         <Button icon="lock-open" onClick={onGoToVault}>
