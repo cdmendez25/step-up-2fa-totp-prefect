@@ -49,5 +49,6 @@ def confirm(body: ConfirmRequest, claims: dict = Depends(setup_scope)) -> dict:
     return {
         **state.result(),
         "pre_auth_token": issue_pre_auth_token(claims["sub"], claims["username"], SCOPE_MFA_VERIFY),
+        "expires_in": settings.pre_auth_ttl_seconds,
         "prefect_url": _prefect_url(state),
     }
