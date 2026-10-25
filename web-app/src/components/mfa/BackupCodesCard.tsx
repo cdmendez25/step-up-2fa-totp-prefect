@@ -1,6 +1,7 @@
 import type { BackupCode } from '../../types/ui'
 import { Alert } from '../ui/Alert'
 import { Button } from '../ui/Button'
+import { CopyButton } from '../ui/CopyButton'
 import '../ui/ui.css'
 import './mfa.css'
 
@@ -19,9 +20,7 @@ export function BackupCodesCard({ codes, onCopy, onDownload }: BackupCodesCardPr
           <p className="muted">Úsalos si pierdes tu teléfono. Cada código sirve una sola vez.</p>
         </div>
         <div className="actions">
-          <Button variant="secondary" size="sm" icon="copy" onClick={onCopy}>
-            Copiar
-          </Button>
+          <CopyButton variant="secondary" onCopy={onCopy} />
           <Button variant="secondary" size="sm" icon="download" onClick={onDownload}>
             Descargar .txt
           </Button>

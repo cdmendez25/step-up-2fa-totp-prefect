@@ -1,6 +1,25 @@
 .pipeline-card {
   width: 100%;
   max-width: 440px;
+  animation: fade-up var(--dur-slow) var(--ease-out) 80ms both;
+  transition:
+    border-color var(--dur-base),
+    box-shadow var(--dur-slow) var(--ease-out);
+}
+
+/* El borde de la tarjeta acompaña el resultado del flow */
+.pipeline-card[data-run-state='completed'] {
+  border-color: color-mix(in srgb, var(--color-success) 45%, var(--color-border));
+  box-shadow:
+    var(--shadow-card),
+    0 0 0 4px color-mix(in srgb, var(--color-success) 12%, transparent);
+}
+
+.pipeline-card[data-run-state='failed'] {
+  border-color: color-mix(in srgb, var(--color-danger) 45%, var(--color-border));
+  box-shadow:
+    var(--shadow-card),
+    0 0 0 4px color-mix(in srgb, var(--color-danger) 12%, transparent);
 }
 
 .pipeline-title {
@@ -49,8 +68,53 @@
   display: none;
 }
 
-.task[data-state='completed']::before {
+/* Encima de la línea gris, una línea verde que se "llena" cuando la task termina */
+.task::after {
+  content: '';
+  position: absolute;
+  left: calc(var(--dot) / 2 - 1px);
+  top: var(--dot);
+  bottom: 0;
+  width: 2px;
   background: var(--color-success);
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform var(--dur-slow) var(--ease-out);
+}
+
+.task:last-child::after {
+  display: none;
+}
+
+.task[data-state='completed']::after {
+  transform: scaleY(1);
+}
+
+.task[data-state='completed'] .task-dot {
+  animation: pop var(--dur-base) var(--ease-spring);
+}
+
+.task[data-state='failed'] .task-dot {
+  --glow-color: color-mix(in srgb, var(--color-danger) 50%, transparent);
+  animation:
+    pop var(--dur-base) var(--ease-spring),
+    glow 900ms var(--ease-out) 1;
+}
+
+.task[data-state='failed'] .task-body {
+  animation: shake 360ms var(--ease-out);
+}
+
+.task[data-state='running'] .task-name {
+  color: var(--color-info);
+}
+
+.task-detail {
+  animation: fade-up var(--dur-base) var(--ease-out);
+}
+
+.task-status {
+  transition: color var(--dur-base);
 }
 
 .task-dot {
@@ -198,6 +262,7 @@
   background: var(--color-success-bg);
   color: var(--color-success);
   font-weight: 600;
+  animation: pop var(--dur-base) var(--ease-spring);
 }
 
 .window-chip[data-active='true']::before {

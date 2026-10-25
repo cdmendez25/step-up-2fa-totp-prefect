@@ -11,6 +11,8 @@ export interface Session {
   preAuthScope?: string
   /** Marca de tiempo (ms) en que vence el pre_auth_token. */
   preAuthExpiresAt?: number
+  /** Duración total del pre_auth_token (ms), para la barra de tiempo. */
+  preAuthTtlMs?: number
   accessToken?: string
 }
 

@@ -303,3 +303,60 @@
     align-items: start;
   }
 }
+
+/* ---------- Movimiento de entrada ---------- */
+.auth-card {
+  animation: fade-up var(--dur-slow) var(--ease-out) both;
+}
+
+/* Los pasos del flujo Step-Up aparecen en cascada */
+.flow-steps li {
+  animation: fade-up var(--dur-slow) var(--ease-out) both;
+  transition:
+    background var(--dur-base),
+    border-color var(--dur-base),
+    color var(--dur-base);
+}
+
+.flow-steps li:nth-child(1) { animation-delay: 120ms; }
+.flow-steps li:nth-child(2) { animation-delay: 200ms; }
+.flow-steps li:nth-child(3) { animation-delay: 280ms; }
+
+.flow-steps li[aria-current='step'] .flow-num {
+  --glow-color: rgb(52 211 153 / 0.55);
+  animation: glow 1.2s var(--ease-out) 500ms 1;
+}
+
+/* Pantallas internas: cada bloque entra uno tras otro */
+.page > * {
+  animation: fade-up var(--dur-slow) var(--ease-out) both;
+}
+
+.page > *:nth-child(2) { animation-delay: 70ms; }
+.page > *:nth-child(3) { animation-delay: 140ms; }
+.page > *:nth-child(4) { animation-delay: 210ms; }
+
+/* Pestaña activa con una línea inferior que crece */
+.topnav-item {
+  position: relative;
+  transition:
+    background var(--dur-fast),
+    color var(--dur-fast);
+}
+
+.topnav-item::after {
+  content: '';
+  position: absolute;
+  left: var(--space-3);
+  right: var(--space-3);
+  bottom: 2px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--color-primary);
+  transform: scaleX(0);
+  transition: transform var(--dur-base) var(--ease-out);
+}
+
+.topnav-item[aria-current='page']::after {
+  transform: scaleX(1);
+}

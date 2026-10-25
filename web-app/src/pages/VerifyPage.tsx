@@ -18,8 +18,10 @@ const runningPipeline: PipelineTask[] = TASK_NAMES.map((name, index) => ({
   state: index === 0 ? 'running' : 'pending',
 }))
 
-// Cuánto se deja ver el pipeline en verde antes de entrar a la bóveda.
-const SUCCESS_PAUSE_MS = 2500
+// Cuánto se deja ver el pipeline (animado task por task) antes de entrar a la bóveda.
+const SUCCESS_PAUSE_MS = 3200
+// En el último minuto del token temporal, la barra se pone en alerta.
+const WARNING_MS = 60_000
 
 function formatTimeLeft(expiresAt: number | undefined, now: number): string | null {
   if (!expiresAt) return null
@@ -58,6 +60,7 @@ export function VerifyPage() {
     return <Navigate to="/login" replace />
   }
   const preAuthToken = session.preAuthToken
+  const remainingMs = Math.max(0, (session.preAuthExpiresAt ?? now) - now)
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -122,6 +125,9 @@ export function VerifyPage() {
       error={error}
       codeError={codeError}
       preAuthTimeLeft={formatTimeLeft(session.preAuthExpiresAt, now)}
+      preAuthProgress={remainingMs / (session.preAuthTtlMs ?? 300_000)}
+      preAuthWarning={remainingMs < WARNING_MS}
+      codeStatus={runState === 'completed' ? 'success' : runState === 'failed' ? 'error' : 'idle'}
       pipeline={pipeline}
       runState={runState}
       matchedWindow={matchedWindow}

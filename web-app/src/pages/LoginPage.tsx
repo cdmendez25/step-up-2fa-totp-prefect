@@ -30,6 +30,7 @@ export function LoginPage() {
         preAuthToken: result.pre_auth_token,
         preAuthScope: result.scope,
         preAuthExpiresAt: Date.now() + result.expires_in * 1000,
+        preAuthTtlMs: result.expires_in * 1000,
       })
       // 2FA activo → paso 2 del Step-Up. Si no, primero hay que configurarlo.
       navigate(result.mfa_status === 'ACTIVE' ? '/verify' : '/security')

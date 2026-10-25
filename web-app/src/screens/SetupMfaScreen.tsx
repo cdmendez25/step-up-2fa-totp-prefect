@@ -7,7 +7,7 @@ import { QrCard } from '../components/mfa/QrCard'
 import { Alert } from '../components/ui/Alert'
 import { Button } from '../components/ui/Button'
 import { Icon } from '../components/ui/Icon'
-import { TextField } from '../components/ui/TextField'
+import { OtpField } from '../components/ui/OtpField'
 import './screens.css'
 
 export interface SetupMfaScreenProps {
@@ -136,17 +136,12 @@ function PendingSection({
           {confirmError && <Alert variant="error">{confirmError}</Alert>}
 
           <form className="stack" onSubmit={onConfirmSubmit} noValidate>
-            <TextField
+            <OtpField
               id="confirm-code"
               label="Código de 6 dígitos"
-              variant="otp"
               value={confirmCode}
               onValueChange={onConfirmCodeChange}
-              inputMode="numeric"
-              autoComplete="one-time-code"
-              maxLength={6}
-              placeholder="000000"
-              required
+              status={confirmError ? 'error' : 'idle'}
             />
             <Button type="submit" block icon="check" loading={isConfirming}>
               Confirmar y activar

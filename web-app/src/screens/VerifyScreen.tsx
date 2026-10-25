@@ -5,6 +5,7 @@ import { PipelinePanel } from '../components/pipeline/PipelinePanel'
 import { Alert } from '../components/ui/Alert'
 import { Button } from '../components/ui/Button'
 import { Icon } from '../components/ui/Icon'
+import { OtpField } from '../components/ui/OtpField'
 import { SegmentedControl } from '../components/ui/SegmentedControl'
 import { TextField } from '../components/ui/TextField'
 import './screens.css'
@@ -22,6 +23,12 @@ export interface VerifyScreenProps {
   codeError?: string
   /** Tiempo restante del pre_auth_token ya formateado, p. ej. "04:32". */
   preAuthTimeLeft?: string | null
+  /** Fracción de tiempo que le queda al token (1 = recién emitido, 0 = vencido). */
+  preAuthProgress?: number
+  /** true en el último minuto: la barra se pone en alerta. */
+  preAuthWarning?: boolean
+  /** "success" pinta las casillas de verde; "error" las hace temblar. */
+  codeStatus?: 'idle' | 'error' | 'success'
   pipeline: PipelineTask[]
   runState: FlowRunState
   matchedWindow?: TotpWindow | null
@@ -42,6 +49,9 @@ export function VerifyScreen({
   error,
   codeError,
   preAuthTimeLeft,
+  preAuthProgress = 1,
+  preAuthWarning = false,
+  codeStatus = 'idle',
   pipeline,
   runState,
   matchedWindow,
@@ -67,12 +77,15 @@ export function VerifyScreen({
         </header>
 
         {preAuthTimeLeft && (
-          <div className="session-timer">
+          <div className="session-timer" data-warning={preAuthWarning || undefined}>
             <span className="session-timer-label">
               <Icon name="clock" size={18} />
               Tu sesión temporal expira en
             </span>
             <time>{preAuthTimeLeft}</time>
+            <span className="session-timer-bar" aria-hidden="true">
+              <span style={{ transform: `scaleX(${Math.max(0, Math.min(1, preAuthProgress))})` }} />
+            </span>
           </div>
         )}
 
@@ -91,18 +104,14 @@ export function VerifyScreen({
           />
 
           {factor === 'totp' ? (
-            <TextField
+            <OtpField
               id="verify-code"
               label="Código de 6 dígitos"
-              variant="otp"
               value={code}
               onValueChange={onCodeChange}
               error={codeError}
-              inputMode="numeric"
-              autoComplete="one-time-code"
-              maxLength={6}
-              placeholder="000000"
-              required
+              status={codeStatus}
+              autoFocus
             />
           ) : (
             <TextField

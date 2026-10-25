@@ -90,6 +90,7 @@ export function SecurityPage() {
         preAuthToken: result.pre_auth_token,
         preAuthScope: 'mfa:verify',
         preAuthExpiresAt: Date.now() + result.expires_in * 1000,
+        preAuthTtlMs: result.expires_in * 1000,
       })
       setStatus('ACTIVE')
     } catch (caught) {

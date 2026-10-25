@@ -1,3 +1,4 @@
+import type { CSSProperties } from 'react'
 import { Icon, type IconName } from './Icon'
 import './ui.css'
 
@@ -23,8 +24,14 @@ export function SegmentedControl<Value extends string>({
   value,
   onChange,
 }: SegmentedControlProps<Value>) {
+  // El CSS usa --index y --count para deslizar la píldora hasta la opción elegida.
+  const pillPosition = {
+    '--index': Math.max(0, options.findIndex((option) => option.value === value)),
+    '--count': options.length,
+  } as CSSProperties
+
   return (
-    <fieldset className="segmented">
+    <fieldset className="segmented" style={pillPosition}>
       <legend className="visually-hidden">{legend}</legend>
       {options.map((option) => {
         const id = `${name}-${option.value}`

@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { Button } from '../ui/Button'
+import { CopyButton } from '../ui/CopyButton'
 import { Icon } from '../ui/Icon'
 import '../ui/ui.css'
 import './mfa.css'
@@ -42,9 +42,7 @@ export function QrCard({ qrCode, secret, issuer, accountName, onCopySecret }: Qr
         <p className="field-label">¿No puedes escanear? Ingresa la clave manualmente</p>
         <div className="secret-box">
           <code aria-label="Clave secreta en Base32">{secret ?? '•••• •••• •••• ••••'}</code>
-          <Button variant="ghost" size="sm" icon="copy" onClick={onCopySecret} disabled={!secret}>
-            Copiar
-          </Button>
+          <CopyButton onCopy={onCopySecret} disabled={!secret} />
         </div>
       </div>
 
